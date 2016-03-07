@@ -16,7 +16,7 @@ func CheckError(err error) {
     }
 }
 
-var WorkQueue = make(chan WorkRequest, 100)
+var WorkQueue = make(chan WorkRequest, 100000)
 
 func Collector(ws *sync.WaitGroup) {
     /* Lets prepare a address at any address at port 10001*/
