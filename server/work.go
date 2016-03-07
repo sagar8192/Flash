@@ -1,5 +1,4 @@
-package main
-
+package server
 
 type WorkRequest struct {
   Topic   string
