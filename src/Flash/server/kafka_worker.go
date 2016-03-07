@@ -3,9 +3,7 @@ package server
 import (
   "fmt"
   "strconv"
-  "time"
   "os"
-  "github.com/Shopify/sarama"
 )
 
 // NewWorker creates, and returns a new Worker object. Its only argument
@@ -34,8 +32,7 @@ type KafkaWorker struct {
 // This function "starts" the worker by starting a goroutine, that is
 // an infinite "for-select" loop.
 func (w KafkaWorker) Start() {
-    producer := Getkafkaproducer()
-    f, err := os.Create("/tmp/Flash/" + w.topic + strconv.Itoa(w.ID))
+    f, err := os.Create("/tmp/Flash_" + w.topic + strconv.Itoa(w.ID))
     CheckError(err)
 
     go func() {
@@ -54,11 +51,6 @@ func (w KafkaWorker) Start() {
           fmt.Printf("wrote %d bytes\n", n3)
           CheckError(err)
 
-          producer.Input() <- &sarama.ProducerMessage{
-            Topic: w.topic,
-            Value: sarama.StringEncoder(work.Logline),
-          }
-
         case <-w.QuitChan:
           // We have been asked to stop.
           fmt.Printf("worker%d stopping\n", w.ID)
@@ -66,23 +58,6 @@ func (w KafkaWorker) Start() {
         }
       }
     }()
-}
-
-func Getkafkaproducer() sarama.AsyncProducer {
-  config := sarama.NewConfig()
-  config.Producer.RequiredAcks = sarama.WaitForAll          // Wait for all in-sync replicas to ack the message
-  config.Producer.Compression = sarama.CompressionSnappy    // Compress messages using snappy encoding
-  config.Producer.Retry.Max = 3                             // Retry up to 3 times to produce the message
-  config.Producer.Flush.Frequency = 1000 * time.Millisecond  // Retry up to 10 times to produce the message
-  config.Producer.Return.Errors = false
-
-  Brokerlist := []string{"kafka:9092"}
-  producer, err := sarama.NewAsyncProducer(Brokerlist, config)
-  if err != nil {
-      log.Fatalln("Failed to start Sarama producer:", err)
-  }
-
-  return producer
 }
 
 // Stop tells the worker to stop listening for work requests.
