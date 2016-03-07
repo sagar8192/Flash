@@ -44,9 +44,6 @@ func Collector(ws *sync.WaitGroup) {
             fmt.Println("Problem in unmarchalling data: ",err1)
         }
 
-        // work := WorkRequest{Name: string(buf[0:n]), Delay: 1}
-        // work := WorkRequest{Topic: request.Topic, Logline: request.Logline}
-
         // Push the work onto the queue.
         WorkQueue <- WorkRequest{Topic: request.Topic, Logline: request.Logline}
         fmt.Println("Work request queued", request.Topic, request.Logline)
