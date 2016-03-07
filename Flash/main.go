@@ -1,8 +1,9 @@
-package server
+package main
 
 import (
     "os"
     "time"
+    "Flash/server"
 
     "github.com/Sirupsen/logrus"
     "github.com/codegangsta/cli"
@@ -53,7 +54,7 @@ func start(ctx *cli.Context) {
         log.Info("Profile set")
     }
 
-    go Startcollector()
+    go server.Startcollector()
 
     log.Info("Collector has been started....")
 

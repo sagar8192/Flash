@@ -1,9 +1,10 @@
-package client
+package main
 
 import (
     "encoding/json"
     "fmt"
     "net"
+    "os"
 )
 
 type Request struct {
@@ -14,6 +15,7 @@ type Request struct {
 func CheckError(err error) {
     if err  != nil {
         fmt.Println("Error: " , err)
+        os.Exit(0) 
     }
 }
 
@@ -37,6 +39,7 @@ func main() {
           i++
           buf := []byte(jsonRequest)
           _,err1 := Conn.Write(buf)
+          CheckError(err1)
           if err != nil {
             fmt.Println(request, err1)
           }
