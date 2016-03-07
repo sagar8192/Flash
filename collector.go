@@ -29,7 +29,6 @@ func Collector(ws *sync.WaitGroup) {
     defer ServerConn.Close()
 
     buf := make([]byte, 2048)
-    // buf := make([]byte, unsafe.Sizeof(Message))
     var request WorkRequest
 
     for {
