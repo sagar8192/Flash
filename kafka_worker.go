@@ -36,7 +36,7 @@ type KafkaWorker struct {
 func (w KafkaWorker) Start() {
     producer := Getkafkaproducer()
     f, err := os.Create("/tmp/Flash/" + w.topic + strconv.Itoa(w.ID))
-    check(err)
+    CheckError(err)
 
     go func() {
 
@@ -52,7 +52,7 @@ func (w KafkaWorker) Start() {
 
           n3, err := f.WriteString(work.Logline)
           fmt.Printf("wrote %d bytes\n", n3)
-          check(err)
+          CheckError(err)
 
           producer.Input() <- &sarama.ProducerMessage{
             Topic: w.topic,
