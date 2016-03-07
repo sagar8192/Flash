@@ -19,13 +19,13 @@ func Createworker(i int, WorkerQueue chan chan WorkRequest, topic string) {
 }
 
 func Createqueue(topic string, queues *[]Queues, m map[string]int, index int) chan chan WorkRequest{
-    NewWorkQueue := make(chan chan WorkRequest, 1000)
+    NewWorkQueue := make(chan chan WorkRequest, 100)
     new_queue := Queues{WorkerQueue: NewWorkQueue, num_workers: 1}
     *queues = append(*queues, new_queue)
     m[topic] = index
     go func () {
         i := 0
-        for i < 100 {
+        for i < 10 {
             Createworker(i, NewWorkQueue, topic)
             i += 1
         }
@@ -34,9 +34,8 @@ func Createqueue(topic string, queues *[]Queues, m map[string]int, index int) ch
 }
 
 func StartDispatcher(wg *sync.WaitGroup) {
-  // num_workers := 1
-  // WorkerQueue = make(chan chan WorkRequest, num_workers)
-  WorkerQueue := make(chan chan WorkRequest, 10000)
+
+  WorkerQueue := make(chan chan WorkRequest, 100)
   num_queues := 0
   var queues []Queues
 
