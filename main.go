@@ -35,11 +35,6 @@ func main() {
     app.Usage = desc
     app.Flags = []cli.Flag{
         cli.StringFlag{
-            Name:  "config, c",
-            Value: "/etc/fullerite.conf",
-            Usage: "JSON formatted configuration file",
-        },
-        cli.StringFlag{
             Name:  "log_level, l",
             Value: "info",
             Usage: "Logging level (debug, info, warn, error, fatal, panic)",
