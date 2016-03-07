@@ -38,6 +38,7 @@ func StartDispatcher(wg *sync.WaitGroup) {
   WorkerQueue := make(chan chan WorkRequest, 100)
   num_queues := 0
   var queues []Queues
+  m := make(map[string]int)
 
   go func() {
     for {
